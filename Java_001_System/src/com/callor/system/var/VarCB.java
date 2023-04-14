@@ -41,5 +41,11 @@ public class VarCB {
 		 * 반드시 boolean type 의 변수에 저장해야 한다
 		 */
 		boolean bYes = intNum1 % 2 == 0;
+		
+		// 숫자 <-> boolean 간에는 변환을 할 수 없다.
+		// intYes1 = intNum1 % 2 == 0;
+		// bYEs = intNum1 % 2;
+		
+		
 	}
 }
