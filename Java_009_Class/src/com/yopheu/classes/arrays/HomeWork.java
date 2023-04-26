@@ -7,7 +7,6 @@ public class HomeWork {
 	public static void main(String[] args) {
 		// ScoreDto type 요소 10를 갖는 배열 선언
 		ScoreDto[] scores = new ScoreDto[10];
-		String[] strName = new String[10];
 		// class type 의 배열 요소 전체를 객체 요소로 생성하기
 		for(int i = 0; i < scores.length; i++) {
 			scores[i] = new ScoreDto();
