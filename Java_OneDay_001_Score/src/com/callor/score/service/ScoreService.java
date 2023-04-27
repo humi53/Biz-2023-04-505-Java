@@ -35,7 +35,8 @@ public class ScoreService {
 	// 마지막 파라미터 = quota(학생정원) 
 	public void printDtoTotalsAvgs(int tKor, int tEng, int tMath, int tMusic, int tArt, int quota) {
 		int allTotal = tKor + tEng + tMath + tMusic + tArt;
-		float fQuoat = (float)quota;
+		float fQuoat = (float)quota;	// 학생정원 수
+		int subjectCnt = 5;			// 학과목 수
 		// 총점 출력부.
 		System.out.println("-".repeat(this.repetNum));
 		System.out.printf(" 총점\t\t%d\t%d\t%d\t%d\t%d\t%d\n",
@@ -49,7 +50,7 @@ public class ScoreService {
 				tMath/fQuoat,
 				tMusic/fQuoat,
 				tArt/fQuoat,
-				allTotal/(fQuoat*5)
+				allTotal/(fQuoat*subjectCnt)
 				);
 		System.out.println("=".repeat(this.repetNum));
 	}
