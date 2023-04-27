@@ -21,6 +21,6 @@ public class ScoreDto {
 	
 	// 학생의 평균.
 	public float getAvg() {
-		return getTotal() / 5;
+		return (float)getTotal() / 5;
 	}
 }
