@@ -14,8 +14,8 @@ public class ScoreServiceA {
 	// 성적정보 데이터를 받아서 출력하기
 	public void scorePrint(ScoreDto score) {
 		System.out.printf("%s\t%s\t%3d\t%3d\t%3d\t%3d\t%5.2f\n",
-				score.stName, 
 				score.stNum, 
+				score.stName, 
 				score.scKor, 
 				score.scEng, 
 				score.scMath, 
