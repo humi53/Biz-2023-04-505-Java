@@ -9,7 +9,5 @@ public class StudentD {
 		stdService.localStudent();
 		stdService.printStudent();
 		
-		StudentDto stDto = stdService.getStudent("S0003");
-		System.out.println(stDto.toString());
 	}
 }

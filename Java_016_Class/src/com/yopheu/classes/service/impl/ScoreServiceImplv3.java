@@ -48,7 +48,10 @@ public class ScoreServiceImplv3 implements ScoreService{
 	public void printScore() {
 		StudentServiceImplV1 stdService = new StudentServiceImplV1();
 		stdService.localStudent();
-		// TODO Auto-generated method stub
+		
+		System.out.println("=".repeat(100));
+		System.out.println("학번\t이름\t학과\t\t국어\t영어\t수학\t음악\t미술\tSW\tDB");
+		System.out.println("-".repeat(100));
 		for(ScoreDto dto : scList) {
 			StudentDto student = stdService.getStudent(dto.getStNum());
 			System.out.print(dto.getStNum() + "\t");
@@ -63,7 +66,7 @@ public class ScoreServiceImplv3 implements ScoreService{
 			System.out.print(dto.getScDataBase() + "\t");
 			System.out.println();
 		}
-		
+		System.out.println("=".repeat(100));
 	}
 
 	
