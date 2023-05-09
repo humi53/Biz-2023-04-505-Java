@@ -19,8 +19,5 @@ public class ExecG {
 		ScoreService scService = new ScoreServiceImplv3();
 		scService.makeScore();
 		scService.printScore();
-
-		ScoreService scService1 = new ScoreServiceImplV4();
-		scService1.printScore();
 	}
 }
