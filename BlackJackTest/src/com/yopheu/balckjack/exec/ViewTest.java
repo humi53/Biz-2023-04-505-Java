@@ -32,12 +32,22 @@ public class ViewTest {
 		
 		System.out.print("\u001B[33m");
 		System.out.println("┌──┐");
+		System.out.print("\u001B[0m");
+		
+		System.out.print("\u001B[33m");
 		System.out.print("│");
+		System.out.print("\u001B[0m");
+		
 		System.out.print("\u001B[32m");
 		System.out.print("Y");
 		System.out.print("H");
+		System.out.print("\u001B[0m");
+		
 		System.out.print("\u001B[33m");
 		System.out.println("│");
+		System.out.print("\u001B[0m");
+		
+		System.out.print("\u001B[33m");
 		System.out.println("└──┘");
 		System.out.print("\u001B[0m");
 		
