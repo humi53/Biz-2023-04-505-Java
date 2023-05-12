@@ -3,33 +3,29 @@ package com.ny.aenean.exec;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ny.aenean.models.BlackJackDto;
 import com.ny.aenean.models.Card;
+import com.ny.aenean.service.AeneanService;
+import com.ny.aenean.service.impl.AeneanServiceImplV1;
 import com.ny.aenean.view.AeneanView;
 import com.ny.aenean.view.Impl.AeneanViewImplV1;
 
 public class AeneanExec {
 	public static void main(String[] args) {
 		// 시작지점
-		AeneanViewImplV1 view = new AeneanViewImplV1();
+//		AeneanViewImplV1 view = new AeneanViewImplV1();
 		
-		view.setGameDeck(null);
+//		BlackJackDto bjDto = new BlackJackDto();
+//		bjDto.getDealer().deal(new Card("S","T"));
+//		bjDto.getDealer().deal(new Card("D","A"));
+//		bjDto.getPlayer().deal(new Card("S","A"));
+//		bjDto.getPlayer().deal(new Card("D","K"));
+//		view.setGameDeck(bjDto);
+//		view.paint();
 		
-		String[] temp = view.getCardImg(new Card("S","1"));
-		temp = view.getCloseCardImg();
+		AeneanService anService = new AeneanServiceImplV1();
+		anService.start();
+
 		
-		for(String str : temp) {
-			System.out.println(str);
-		}
-		
-		List<Card> cardList = new ArrayList<>();
-		cardList.add(new Card("S","1"));
-		cardList.add(new Card("D","1"));
-		cardList.add(new Card("H","1"));
-		cardList.add(new Card("C","1"));
-		
-		temp = view.getArrCardImg(cardList);
-		for(String str : temp) {
-			System.out.println(str);
-		}
 	}
 }

@@ -13,6 +13,7 @@ public class BlackJackDto {
 	
 	public DealerDto getDealer() {
 		return dealer;
+//		return new DealerDto();
 	}
 	public void setDealer() {
 		this.dealer = new DealerDto();

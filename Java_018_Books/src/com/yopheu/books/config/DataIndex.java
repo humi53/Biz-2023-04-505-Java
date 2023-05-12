@@ -20,4 +20,13 @@ public class DataIndex {
 		public static final int TEL = 2;
 		public static final int ADDRESS = 3;
 	}
+	
+	// 출판사코드,출판사명,대표,전화번호,주소
+	public static class Publiser{
+		public static final int CODE = 0;
+		public static final int NAME = 1;
+		public static final int CEO = 2;
+		public static final int TEL = 3;
+		public static final int ADDRESS = 4;
+	}
 }
