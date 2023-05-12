@@ -3,7 +3,7 @@ package com.ny.aenean.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerDto {
+public class PlayerDto implements ISuperDto{
 	private List<Card> pCards;
 	
 	public PlayerDto() {
@@ -11,6 +11,7 @@ public class PlayerDto {
 	}
 	
 	// 카드 (딜) 받기
+	@Override
 	public void deal(Card card) {
 		pCards.add(card);
 	}

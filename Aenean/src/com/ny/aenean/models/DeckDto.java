@@ -16,7 +16,18 @@ public class DeckDto {
 		this.listCard = mixCard(arrCard);
 	}
 	
-	public List<Card> mixCard(Card[] arrCard){
+	public void setDeck() {
+		this.listCard = mixCard(arrCard);
+	}
+	
+	public Card getCard() {
+		return listCard.get(0);
+	}
+	public void getCardConfirm() {
+		listCard.remove(0);
+	}
+	
+	private List<Card> mixCard(Card[] arrCard){
 		int rndNum1 = 0;
 		int rndNum2 = 0;
 		List<Card> listCard = new ArrayList<>();
@@ -40,7 +51,7 @@ public class DeckDto {
 		return listCard.size();
 	}
 	
-	public Card[] makeDeck() {
+	private Card[] makeDeck() {
 		Card[] arrCard = new Card[52];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 13; j++) {

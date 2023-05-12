@@ -3,7 +3,7 @@ package com.ny.aenean.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DealerDto {
+public class DealerDto implements ISuperDto{
 	private List<Card> dCards;	
 	private boolean cardOpen;	// 2번째 카드 오픈 여부
 	
@@ -13,6 +13,7 @@ public class DealerDto {
 	}
 
 	// 카드 (딜) 받기
+	@Override
 	public void deal(Card card) {
 		dCards.add(card);
 	}

@@ -56,6 +56,8 @@ public class AeneanViewImplV1 implements AeneanView{
 		printArrayImg(secImg);
 		
 		
+		//테이블 끝 표현
+		System.out.println("─".repeat(90));
 		//-------------------
 		
 	}
