@@ -1,8 +1,12 @@
 package com.ny.aenean.view.Impl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.ny.aenean.cardconfig.CardConfig;
+import com.ny.aenean.cardconfig.CardConfig.CardSuit;
+import com.ny.aenean.cardconfig.CardConfig.ViewColor;
+import com.ny.aenean.cardconfig.CardConfig.ViewSuit;
+import com.ny.aenean.cardconfig.InputConfig.GameState;
 import com.ny.aenean.models.BlackJackDto;
 import com.ny.aenean.models.Card;
 import com.ny.aenean.models.DealerDto;
@@ -10,9 +14,9 @@ import com.ny.aenean.models.DeckDto;
 import com.ny.aenean.models.PlayerDto;
 import com.ny.aenean.view.AeneanView;
 
-public class AeneanViewImplV1 implements AeneanView{
+public class AeneanViewImplV1 implements AeneanView {
 	BlackJackDto bjDto;
-	
+
 	@Override
 	public void setGameDeck(BlackJackDto bjDto) {
 		this.bjDto = bjDto;
@@ -21,214 +25,353 @@ public class AeneanViewImplV1 implements AeneanView{
 	@Override
 	public void paint() {
 		// TODO Auto-generated method stub
-		printGamePlaying();
-		
+		if(bjDto.getGameState() == GameState.MAIN) {
+			printGameMain();
+		}else if(bjDto.getGameState() == GameState.GAMEREADY){
+			printGamePlaying();
+		}else if(bjDto.getGameState() == GameState.GAMEDEALING){
+			printGamePlaying();
+		}else if(bjDto.getGameState() == GameState.PLAYERPROMPT) {
+			printGamePlaying();
+		}else if(bjDto.getGameState() == GameState.DEALERREADY) {
+			printGamePlaying();
+		}else if(bjDto.getGameState() == GameState.WINNERDEALER ||
+					bjDto.getGameState() == GameState.WINNERPLAERY ||
+					bjDto.getGameState() == GameState.GAMEPUSH) {
+			printGamePlaying();
+		}
 	}
 
 	@Override
 	public void repaint() {
 		// TODO Auto-generated method stub
+
+	}
+
+	public static void clearScreen() {
+		for (int i = 0; i < 80; i++) {
+			System.out.println("");
+		}
+	}
+	
+	// 진입시 메인화면.
+	private void printGameMain() {
+		String[] firImg = { "", "", "" };
+		String[] secImg = { "", "", "" };
+		String[][] cardText = {
+				{"Bl","ac","k ","Ja","ck"},
+				{"♠T","ac","k ","Ja","ck"},
+				{"♠T","♠J","k ","Ja","ck"},
+				{"♠T","♠J","♠Q","Ja","ck"},
+				{"♠T","♠J","♠Q","♠K","ck"},
+				{"♠T","♠J","♠Q","♠K","♠A"}};
+		String[][] cardText2 = {
+				{"Ae","ne","an"},
+				{"♠K","ne","an"},
+				{"♠K","♠Q","an"},
+				{"♠K","♠Q","♠A"},
+		};
+		int cardTextSize = cardText.length;
+		int cardText2Size = cardText2.length;
+		for(int i = 0; i < cardTextSize + cardText2Size; i++) {
+			//출력화면 세팅
+			Arrays.fill(firImg, "");
+			Arrays.fill(secImg, "");
+			setMoreImg(firImg, makeOneTab(2));
+			setMoreImg(secImg, makeOneTab(2));
+			if(i < cardTextSize) {
+				//첫번째 줄
+				for(int j = 0; j < cardText[i].length; j++) {
+					if(cardText[i][j].contains("♠")) {
+						setMoreImg(firImg, getGoldCardImg(cardText[i][j], 1));
+					}else {
+						setMoreImg(firImg, getGoldCardImg(cardText[i][j]));
+					}
+				}
+				// 두번째 줄
+				for(int j = 0; j < cardText2[0].length; j++) {
+					setMoreImg(secImg, getGoldCardImg(cardText2[0][j]));
+				}
+			}else {
+				// 첫번째 줄
+				for(int j = 0; j < cardText[cardText.length-1].length; j++) {
+					setMoreImg(firImg, getGoldCardImg(cardText[cardText.length-1][j], 1));
+				}
+				// 두번째 줄
+				for(int j = 0; j < cardText2[i-cardTextSize].length; j++) {
+					if(cardText2[i-cardTextSize][j].contains("♠")) {
+						setMoreImg(secImg, getGoldCardImg(cardText2[i-cardTextSize][j], 1));
+					}else {
+						setMoreImg(secImg, getGoldCardImg(cardText2[i-cardTextSize][j]));
+					}
+				}
+			}
+			
+			
+			//이미지 출력.
+			// 화면 클리어
+			clearScreen();
+			System.out.println("=".repeat(90));
+			System.out.println("\t\t\t 텍사스 홀덤 아니죠. BlackJack 맞습니다.");
+			System.out.println("=".repeat(90));
+			// 카드 출력
+			printArrayImg(firImg);
+			printArrayImg(secImg);
+			// 테이블 끝 표현
+			System.out.println("─".repeat(90));
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
 	// 진행중인 게임화면 출력.
 	private void printGamePlaying() {
-		String[] firImg = {"","",""};
-		String[] secImg = {"","",""};
+		String[] topImg = { "", "", "" };
+		String[] firImg = { "", "", "" };
+		String[] secImg = { "", "", "" };
+
+		// 출력 데이터 셋팅 및 로딩
+		// 위에
+		setMoreImg(topImg, makeOneTab(6));
+		setMoreImg(topImg, getDeckImg());
 		
-		//출력 데이터 셋팅 및 로딩
 		// 카드 첫줄...
-		setMoreImg(firImg,makeNameImg("Dealer")); // 딜러라는 표시와 공백
-		setMoreImg(firImg, getDealerImg());	// 딜러카드 이미지
-		setMoreImg(firImg, makeOneTab(6));
-		setMoreImg(firImg, getDeckImg());
+		setMoreImg(firImg, makeNameImg("Dealer")); // 딜러라는 표시와 공백
+		setMoreImg(firImg, getDealerImg()); // 딜러카드 이미지
+		
 		// 카드 두번째줄...
 		setMoreImg(secImg, makeNameImg("Player")); // 플레이어라는 표시와 공백
-		setMoreImg(secImg, getPlayerImg());	// 플레이어 카드 이미지
-		// 게임 타이틀 
-		
-		
-		
-		
+		setMoreImg(secImg, getPlayerImg()); // 플레이어 카드 이미지
+		// 게임 타이틀
+
+		// 화면 클리어
+		clearScreen();
 		// 카드 출력
+		printArrayImg(topImg);
 		printArrayImg(firImg);
-		
 		printArrayImg(secImg);
-		
-		
-		//테이블 끝 표현
+
+		// 테이블 끝 표현
 		System.out.println("─".repeat(90));
-		//-------------------
+		// -------------------
+		// 게임결과 표현
+		if(bjDto.getGameState() == GameState.WINNERDEALER ||
+				bjDto.getGameState() == GameState.WINNERPLAERY ||
+				bjDto.getGameState() == GameState.GAMEPUSH){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			printWinMessage();
+		}
+
+	}
+	private void printWinMessage() {
+		int gameState = bjDto.getGameState();
+		String str = "";
+		if(gameState == GameState.WINNERDEALER) {
+			str += ViewColor.RED;
+			str += "-Dealer-";
+			str += " 가 이겼습니다.";
+			str += ViewColor.END;
+		} else if(gameState == GameState.WINNERPLAERY) {
+			str += ViewColor.YELLOW;
+			str += "[Player]";
+			str += " 가 이겼습니다.";
+			str += ViewColor.END;
+		} else if(gameState == GameState.GAMEPUSH){
+			str += ViewColor.GREEN;
+			str += "게임이 Push 되었습니다.";
+			str += ViewColor.END;
+		}
+		System.out.println("\t\t" + str);
 		
 	}
-	
+
 	// 원하는 viewImg 에 추가 Img 붙이기
 	private void setMoreImg(String[] sViewImg, String[] moreImg) {
-		for(int i = 0 ; i < sViewImg.length; i++) {
+		for (int i = 0; i < sViewImg.length; i++) {
 			sViewImg[i] += moreImg[i];
 		}
 	}
-	
+
 	// 이름 이미지 만들기 return
 	private String[] makeNameImg(String name) {
-		String[] sVeiwImg = {"","",""};
+		String[] sVeiwImg = { "", "", "" };
 		sVeiwImg[0] += "\t\t ";
 		sVeiwImg[1] += "\t" + name + " : ";
 		sVeiwImg[2] += "\t\t ";
 		return sVeiwImg;
 	}
-	
+
 	// Tab 이미지 만들기 return
 	private String[] makeOneTab(int num) {
-		String[] sVeiwImg = {"","",""};
-		for(int i = 0; i < num; i++) {
+		String[] sVeiwImg = { "", "", "" };
+		for (int i = 0; i < num; i++) {
 			sVeiwImg[0] += "\t";
 			sVeiwImg[1] += "\t";
 			sVeiwImg[2] += "\t";
 		}
 		return sVeiwImg;
 	}
-	
-	
+
 	// 카드 여러장 출력. // 무엇이든지 넣으세요. 출력해드립니다.
 	private void printArrayImg(String[] array) {
-		for(String str : array) {
+		for (String str : array) {
 			System.out.println(str);
 		}
 	}
-	
-	
+
 	private String[] getDeckImg() {
 		DeckDto deck = bjDto.getDeck();
 		String[] arrCardImg;
 		int deckCount = deck.getDeckListCount();
 		String strDeckCount = "00";
-		if(deckCount > 99) {
+		if (deckCount > 99) {
 			strDeckCount = "++";
-		}else {
+		} else {
 			strDeckCount = String.format("%02d", deckCount);
 		}
 		arrCardImg = getGoldCardImg(strDeckCount);
-		
+
 		return arrCardImg;
 	}
-	
+
 	// 딜러의 카드 이미지 return;
 	private String[] getDealerImg() {
 		DealerDto dealerDto = bjDto.getDealer();
-		if(dealerDto.getIsOpen()) {
+		if (dealerDto.getIsOpen()) {
 			return getArrCardImg(dealerDto.getCardList());
+		} else if(dealerDto.getCardList().size() == 2 && // 2장일때만
+				!dealerDto.getIsOpen()){	// open이 아닐때
+			return getDealerReadyImg(dealerDto.getCardList()); 
 		}else {
-			return getDealerReadyImg(dealerDto.getCardList());	// 2장, 준비중일때
+			return getArrCardImg(dealerDto.getCardList());
 		}
 	}
-	
+
 	// 플레이어 카드 이미지 return;
 	private String[] getPlayerImg() {
 		PlayerDto playerDto = bjDto.getPlayer();
 		return getArrCardImg(playerDto.getCardList());
 	}
-	
+
 	// 딜러 2장 준비중인 이미지 만들기.
 	private String[] getDealerReadyImg(List<Card> cardList) {
-		String[] arrCardImg = {"","",""};
+		String[] arrCardImg = { "", "", "" };
 		// 첫번째 카드 이미지 가져오기
-		if(cardList.size() != 0) {
+		if (cardList.size() != 0) {
 			String[] cardImg = getCardImg(cardList.get(0));
-			for(int i = 0; i < cardImg.length; i++) {
+			for (int i = 0; i < cardImg.length; i++) {
 				arrCardImg[i] += cardImg[i];
 			}
 			// 두번째 카드 닫힌 이미지 가져오기
 			String[] closeImg = getCloseCardImg();
-			for(int i = 0; i < closeImg.length; i++) {
+			for (int i = 0; i < closeImg.length; i++) {
 				arrCardImg[i] += closeImg[i];
 			}
 		}
-		
+
 		return arrCardImg;
 	}
-	
-	// 골드카드 만들기
+
 	private String[] getGoldCardImg(String str) {
+		return getGoldCardImg(str, 0);
+	}
+	// 골드카드 만들기
+	private String[] getGoldCardImg(String str, int color) {
 		String[] cardImg = new String[3];
 		String tempHead = "";
 		String tempBody = "";
 		String tempFoot = "";
 		String tempSide = "";
-		
-		tempHead = CardConfig.ViewColor.YELLOW;
+
+		tempHead = ViewColor.YELLOW;
 		tempHead += "┌──┐";
-		tempHead += CardConfig.ViewColor.END;
+		tempHead += ViewColor.END;
 		cardImg[0] = tempHead;
-		
-		tempSide = CardConfig.ViewColor.YELLOW;
+
+		tempSide = ViewColor.YELLOW;
 		tempSide += "│";
-		tempSide += CardConfig.ViewColor.END;
-		
+		tempSide += ViewColor.END;
+
 		tempBody = tempSide;
-		tempBody += CardConfig.ViewColor.GREEN;
+		if(color == 1) {
+			tempBody += ViewColor.YELLOW;
+		}else if(color == 2) {
+			tempBody += ViewColor.RED;
+		}else {
+			tempBody += ViewColor.GREEN;
+		}
 		tempBody += str;
-		tempBody += CardConfig.ViewColor.END;
+		tempBody += ViewColor.END;
 		tempBody += tempSide;
 		cardImg[1] = tempBody;
-		
-		tempFoot = CardConfig.ViewColor.YELLOW;
+
+		tempFoot = ViewColor.YELLOW;
 		tempFoot += "└──┘";
-		tempFoot += CardConfig.ViewColor.END;
+		tempFoot += ViewColor.END;
 		cardImg[2] = tempFoot;
-		
+
 		return cardImg;
 	}
-	
+
 	// 이니셜 밖힌 뒷면(골드카드)
 	private String[] getCloseCardImg() {
 		return getGoldCardImg("NY");
 	}
-	
+
 	// 일반 카드 이미지. + 색보정
-	private String[] getCardImg(Card card){
+	private String[] getCardImg(Card card) {
 		String suit = card.getSuit();
 		String cardNum = card.getNum();
 		String[] cardImg = new String[3];
 		cardImg[0] = "┌──┐";
 		cardImg[2] = "└──┘";
-		
+
 		String tempCardImg = "";
-		if( suit.equalsIgnoreCase(CardConfig.CardSuit.SPADE) ) {
-			tempCardImg = CardConfig.ViewSuit.SPADE + cardNum;
-		}else if( suit.equalsIgnoreCase(CardConfig.CardSuit.DIAMOND) ) {
-			tempCardImg = CardConfig.ViewColor.RED;
-			tempCardImg += CardConfig.ViewSuit.DIAMOND + cardNum;
-			tempCardImg += CardConfig.ViewColor.END;
-		}else if( suit.equalsIgnoreCase(CardConfig.CardSuit.HART) ) {
-			tempCardImg = CardConfig.ViewColor.RED;
-			tempCardImg += CardConfig.ViewSuit.HART + cardNum;
-			tempCardImg += CardConfig.ViewColor.END;
-		}else if( suit.equalsIgnoreCase(CardConfig.CardSuit.CLOVER) ) {
-			tempCardImg = CardConfig.ViewSuit.CLOVER + cardNum;
+		if (suit.equalsIgnoreCase(CardSuit.SPADE)) {
+			tempCardImg = ViewSuit.SPADE + cardNum;
+		} else if (suit.equalsIgnoreCase(CardSuit.DIAMOND)) {
+			tempCardImg = ViewColor.RED;
+			tempCardImg += ViewSuit.DIAMOND + cardNum;
+			tempCardImg += ViewColor.END;
+		} else if (suit.equalsIgnoreCase(CardSuit.HART)) {
+			tempCardImg = ViewColor.RED;
+			tempCardImg += ViewSuit.HART + cardNum;
+			tempCardImg += ViewColor.END;
+		} else if (suit.equalsIgnoreCase(CardSuit.CLOVER)) {
+			tempCardImg = ViewSuit.CLOVER + cardNum;
 		}
-		cardImg[1] = "│" + tempCardImg +"│";
-		
+		cardImg[1] = "│" + tempCardImg + "│";
+
 		return cardImg;
 	}
-	
-	// 일반적인 카드 여러장의 이미지 
+
+	// 일반적인 카드 여러장의 이미지
 	// (딜러의 일반적인 카드)
 	// (플레이어의 일반적인 카드)
 	private String[] getArrCardImg(List<Card> cardList) {
-		String[] arrCardImg = {"","",""};
-		for(Card card : cardList) {
+		String[] arrCardImg = { "", "", "" };
+		for (Card card : cardList) {
 			String[] cardImg = getCardImg(card);
 			cardImgInArrCardImg(arrCardImg, cardImg);
 		}
 		return arrCardImg;
 	}
-	
+
 	// 카드 여러장 이미지에, 카드 이미지 집어넣기
 	private void cardImgInArrCardImg(String[] arrCardImg, String[] cardImg) {
-		for(int i = 0; i < cardImg.length; i++) {
+		for (int i = 0; i < cardImg.length; i++) {
 			arrCardImg[i] += cardImg[i];
 		}
 	}
-	
+
 }

@@ -20,4 +20,19 @@ public class CardConfig {
 		public static final String HART = "H";
 		public static final String CLOVER = "C";
 	}
+	
+	public class CardNum{
+		public static final String A = "A";
+		public static final String T = "T";
+		public static final String J = "J";
+		public static final String Q = "Q";
+		public static final String K = "K";
+	}
+	public class CardScore{
+		public static final int A = 10;
+		public static final int T = 10;
+		public static final int J = 10;
+		public static final int Q = 10;
+		public static final int K = 10;
+	}
 }

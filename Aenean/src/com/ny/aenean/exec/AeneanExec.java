@@ -1,14 +1,8 @@
 package com.ny.aenean.exec;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.ny.aenean.models.BlackJackDto;
-import com.ny.aenean.models.Card;
 import com.ny.aenean.service.AeneanService;
 import com.ny.aenean.service.impl.AeneanServiceImplV1;
-import com.ny.aenean.view.AeneanView;
-import com.ny.aenean.view.Impl.AeneanViewImplV1;
 
 public class AeneanExec {
 	public static void main(String[] args) {
