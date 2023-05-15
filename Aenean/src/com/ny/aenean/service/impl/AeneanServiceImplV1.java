@@ -48,7 +48,6 @@ public class AeneanServiceImplV1 implements AeneanService{
 //		dealCard();
 		while(true) {
 			setGame();
-			
 			ViewPaint();
 			if(bjDto.getGameState() == GameState.MAIN) {			// 메인화면
 				bjDto.setGameState(input.scanMainScreen());
@@ -62,6 +61,7 @@ public class AeneanServiceImplV1 implements AeneanService{
 			}else if(bjDto.getGameState() == GameState.PLAYERSTAY) {	// 플레이어 stay 선택 시.
 				bjDto.setGameState(GameState.DEALERREADY);
 			}else if(bjDto.getGameState() == GameState.PLAYERISBUST) {	// 플레이어 bust 상태 시.
+				bustViewPaint();
 				dealerOpenCard();
 				ViewPaint();
 				bjDto.setGameState(GameState.WINNERDEALER);
@@ -71,6 +71,7 @@ public class AeneanServiceImplV1 implements AeneanService{
 			}else if(bjDto.getGameState() == GameState.DEALER17OVER) {	// 딜러 딜링 끝난 상태.
 				bjDto.setGameState(calcResult());
 			}else if(bjDto.getGameState() == GameState.DEALERISBUST) {	// 딜러 bust 난 상태.
+				bustViewPaint();
 				bjDto.setGameState(GameState.WINNERPLAERY);
 			}else if(bjDto.getGameState() == GameState.WINNERDEALER ||
 					bjDto.getGameState() == GameState.WINNERPLAERY ||
@@ -95,6 +96,16 @@ public class AeneanServiceImplV1 implements AeneanService{
 	@Override
 	public void setBlackJackDto(BlackJackDto bjDto) {
 		this.bjDto = bjDto;
+	}
+	
+	private void bustViewPaint() {
+		ViewPaint();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void dealerOpenCard() {
@@ -156,7 +167,7 @@ public class AeneanServiceImplV1 implements AeneanService{
 			}
 			if(player.getBustState() == IsBust.BUST) {
 				// 버스트 된정보를 표시.
-				ViewPaint();
+				ViewPaint();		
 				return GameState.PLAYERISBUST;
 			}else {
 				ViewPaint();

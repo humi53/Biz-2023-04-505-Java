@@ -11,6 +11,7 @@ import com.ny.aenean.models.BlackJackDto;
 import com.ny.aenean.models.Card;
 import com.ny.aenean.models.DealerDto;
 import com.ny.aenean.models.DeckDto;
+import com.ny.aenean.models.ISuperDto;
 import com.ny.aenean.models.PlayerDto;
 import com.ny.aenean.view.AeneanView;
 
@@ -25,19 +26,21 @@ public class AeneanViewImplV1 implements AeneanView {
 	@Override
 	public void paint() {
 		// TODO Auto-generated method stub
-		if(bjDto.getGameState() == GameState.MAIN) {
+		// GameState의 상황은 InputConfig.GameState의 주석을 참고.
+		if (bjDto.getGameState() == GameState.MAIN) {
 			printGameMain();
-		}else if(bjDto.getGameState() == GameState.GAMEREADY){
+		} else if (bjDto.getGameState() == GameState.GAMEREADY) {	
 			printGamePlaying();
-		}else if(bjDto.getGameState() == GameState.GAMEDEALING){
+		} else if (bjDto.getGameState() == GameState.GAMEDEALING) {
 			printGamePlaying();
-		}else if(bjDto.getGameState() == GameState.PLAYERPROMPT) {
+		} else if (bjDto.getGameState() == GameState.PLAYERPROMPT) {
 			printGamePlaying();
-		}else if(bjDto.getGameState() == GameState.DEALERREADY) {
+		} else if (bjDto.getGameState() == GameState.DEALERREADY) {
 			printGamePlaying();
-		}else if(bjDto.getGameState() == GameState.WINNERDEALER ||
-					bjDto.getGameState() == GameState.WINNERPLAERY ||
-					bjDto.getGameState() == GameState.GAMEPUSH) {
+		} else if (bjDto.getGameState() == GameState.DEALERISBUST || bjDto.getGameState() == GameState.PLAYERISBUST) {
+			printGamePlaying();
+		} else if (bjDto.getGameState() == GameState.WINNERDEALER || bjDto.getGameState() == GameState.WINNERPLAERY
+				|| bjDto.getGameState() == GameState.GAMEPUSH) {
 			printGamePlaying();
 		}
 	}
@@ -53,62 +56,53 @@ public class AeneanViewImplV1 implements AeneanView {
 			System.out.println("");
 		}
 	}
-	
+
 	// 진입시 메인화면.
 	private void printGameMain() {
 		String[] firImg = { "", "", "" };
 		String[] secImg = { "", "", "" };
-		String[][] cardText = {
-				{"Bl","ac","k ","Ja","ck"},
-				{"♠T","ac","k ","Ja","ck"},
-				{"♠T","♠J","k ","Ja","ck"},
-				{"♠T","♠J","♠Q","Ja","ck"},
-				{"♠T","♠J","♠Q","♠K","ck"},
-				{"♠T","♠J","♠Q","♠K","♠A"}};
-		String[][] cardText2 = {
-				{"Ae","ne","an"},
-				{"♠K","ne","an"},
-				{"♠K","♠Q","an"},
-				{"♠K","♠Q","♠A"},
-		};
+		String[][] cardText = { { "Bl", "ac", "k ", "Ja", "ck" }, { "♠T", "ac", "k ", "Ja", "ck" },
+				{ "♠T", "♠J", "k ", "Ja", "ck" }, { "♠T", "♠J", "♠Q", "Ja", "ck" }, { "♠T", "♠J", "♠Q", "♠K", "ck" },
+				{ "♠T", "♠J", "♠Q", "♠K", "♠A" } };
+		String[][] cardText2 = { { "Ae", "ne", "an" }, { "♠K", "ne", "an" }, { "♠K", "♠Q", "an" },
+				{ "♠K", "♠Q", "♠A" }, };
 		int cardTextSize = cardText.length;
 		int cardText2Size = cardText2.length;
-		for(int i = 0; i < cardTextSize + cardText2Size; i++) {
-			//출력화면 세팅
+		for (int i = 0; i < cardTextSize + cardText2Size; i++) {
+			// 출력화면 세팅
 			Arrays.fill(firImg, "");
 			Arrays.fill(secImg, "");
 			setMoreImg(firImg, makeOneTab(2));
 			setMoreImg(secImg, makeOneTab(2));
-			if(i < cardTextSize) {
-				//첫번째 줄
-				for(int j = 0; j < cardText[i].length; j++) {
-					if(cardText[i][j].contains("♠")) {
+			if (i < cardTextSize) {
+				// 첫번째 줄
+				for (int j = 0; j < cardText[i].length; j++) {
+					if (cardText[i][j].contains("♠")) {
 						setMoreImg(firImg, getGoldCardImg(cardText[i][j], 1));
-					}else {
+					} else {
 						setMoreImg(firImg, getGoldCardImg(cardText[i][j]));
 					}
 				}
 				// 두번째 줄
-				for(int j = 0; j < cardText2[0].length; j++) {
+				for (int j = 0; j < cardText2[0].length; j++) {
 					setMoreImg(secImg, getGoldCardImg(cardText2[0][j]));
 				}
-			}else {
+			} else {
 				// 첫번째 줄
-				for(int j = 0; j < cardText[cardText.length-1].length; j++) {
-					setMoreImg(firImg, getGoldCardImg(cardText[cardText.length-1][j], 1));
+				for (int j = 0; j < cardText[cardText.length - 1].length; j++) {
+					setMoreImg(firImg, getGoldCardImg(cardText[cardText.length - 1][j], 1));
 				}
 				// 두번째 줄
-				for(int j = 0; j < cardText2[i-cardTextSize].length; j++) {
-					if(cardText2[i-cardTextSize][j].contains("♠")) {
-						setMoreImg(secImg, getGoldCardImg(cardText2[i-cardTextSize][j], 1));
-					}else {
-						setMoreImg(secImg, getGoldCardImg(cardText2[i-cardTextSize][j]));
+				for (int j = 0; j < cardText2[i - cardTextSize].length; j++) {
+					if (cardText2[i - cardTextSize][j].contains("♠")) {
+						setMoreImg(secImg, getGoldCardImg(cardText2[i - cardTextSize][j], 1));
+					} else {
+						setMoreImg(secImg, getGoldCardImg(cardText2[i - cardTextSize][j]));
 					}
 				}
 			}
-			
-			
-			//이미지 출력.
+
+			// 이미지 출력.
 			// 화면 클리어
 			clearScreen();
 			System.out.println("=".repeat(90));
@@ -119,7 +113,7 @@ public class AeneanViewImplV1 implements AeneanView {
 			printArrayImg(secImg);
 			// 테이블 끝 표현
 			System.out.println("─".repeat(90));
-			
+
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -127,9 +121,9 @@ public class AeneanViewImplV1 implements AeneanView {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	// 진행중인 게임화면 출력.
 	private void printGamePlaying() {
 		String[] topImg = { "", "", "" };
@@ -140,14 +134,16 @@ public class AeneanViewImplV1 implements AeneanView {
 		// 위에
 		setMoreImg(topImg, makeOneTab(6));
 		setMoreImg(topImg, getDeckImg());
-		
+
 		// 카드 첫줄...
 		setMoreImg(firImg, makeNameImg("Dealer")); // 딜러라는 표시와 공백
 		setMoreImg(firImg, getDealerImg()); // 딜러카드 이미지
-		
+		setMoreImg(firImg, getBustImg(bjDto.getDealer()));
+
 		// 카드 두번째줄...
 		setMoreImg(secImg, makeNameImg("Player")); // 플레이어라는 표시와 공백
 		setMoreImg(secImg, getPlayerImg()); // 플레이어 카드 이미지
+		setMoreImg(secImg, getBustImg(bjDto.getPlayer()));
 		// 게임 타이틀
 
 		// 화면 클리어
@@ -161,9 +157,8 @@ public class AeneanViewImplV1 implements AeneanView {
 		System.out.println("─".repeat(90));
 		// -------------------
 		// 게임결과 표현
-		if(bjDto.getGameState() == GameState.WINNERDEALER ||
-				bjDto.getGameState() == GameState.WINNERPLAERY ||
-				bjDto.getGameState() == GameState.GAMEPUSH){
+		if (bjDto.getGameState() == GameState.WINNERDEALER || bjDto.getGameState() == GameState.WINNERPLAERY
+				|| bjDto.getGameState() == GameState.GAMEPUSH) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -173,26 +168,36 @@ public class AeneanViewImplV1 implements AeneanView {
 		}
 
 	}
+
+	private String[] getBustImg(ISuperDto user) {
+		if (user.getBustState()) {
+			return makeBustImg();
+		} else {
+			String[] non = { "", "", "" };
+			return non;
+		}
+	}
+
 	private void printWinMessage() {
 		int gameState = bjDto.getGameState();
 		String str = "";
-		if(gameState == GameState.WINNERDEALER) {
+		if (gameState == GameState.WINNERDEALER) {
 			str += ViewColor.RED;
 			str += "-Dealer-";
 			str += " 가 이겼습니다.";
 			str += ViewColor.END;
-		} else if(gameState == GameState.WINNERPLAERY) {
+		} else if (gameState == GameState.WINNERPLAERY) {
 			str += ViewColor.YELLOW;
 			str += "[Player]";
 			str += " 가 이겼습니다.";
 			str += ViewColor.END;
-		} else if(gameState == GameState.GAMEPUSH){
+		} else if (gameState == GameState.GAMEPUSH) {
 			str += ViewColor.GREEN;
 			str += "게임이 Push 되었습니다.";
 			str += ViewColor.END;
 		}
 		System.out.println("\t\t" + str);
-		
+
 	}
 
 	// 원하는 viewImg 에 추가 Img 붙이기
@@ -209,6 +214,38 @@ public class AeneanViewImplV1 implements AeneanView {
 		sVeiwImg[1] += "\t" + name + " : ";
 		sVeiwImg[2] += "\t\t ";
 		return sVeiwImg;
+	}
+
+	private String[] makeBustImg() {
+		String[] cardImg = { "", "", "" };
+
+		String tempHead = "";
+		String tempBody = "";
+		String tempFoot = "";
+		String tempSide = "";
+
+		tempHead = ViewColor.RED;
+		tempHead += "┌──────┐";
+		tempHead += ViewColor.END;
+		cardImg[0] = tempHead;
+
+		tempSide = ViewColor.RED;
+		tempSide += "│";
+		tempSide += ViewColor.END;
+
+		tempBody = tempSide;
+		tempBody += ViewColor.RED;
+		tempBody += ":Bust!";
+		tempBody += ViewColor.END;
+		tempBody += tempSide;
+		cardImg[1] = tempBody;
+
+		tempFoot = ViewColor.RED;
+		tempFoot += "└──────┘";
+		tempFoot += ViewColor.END;
+		cardImg[2] = tempFoot;
+
+		return cardImg;
 	}
 
 	// Tab 이미지 만들기 return
@@ -249,10 +286,10 @@ public class AeneanViewImplV1 implements AeneanView {
 		DealerDto dealerDto = bjDto.getDealer();
 		if (dealerDto.getIsOpen()) {
 			return getArrCardImg(dealerDto.getCardList());
-		} else if(dealerDto.getCardList().size() == 2 && // 2장일때만
-				!dealerDto.getIsOpen()){	// open이 아닐때
-			return getDealerReadyImg(dealerDto.getCardList()); 
-		}else {
+		} else if (dealerDto.getCardList().size() == 2 && // 2장일때만
+				!dealerDto.getIsOpen()) { // open이 아닐때
+			return getDealerReadyImg(dealerDto.getCardList());
+		} else {
 			return getArrCardImg(dealerDto.getCardList());
 		}
 	}
@@ -285,6 +322,7 @@ public class AeneanViewImplV1 implements AeneanView {
 	private String[] getGoldCardImg(String str) {
 		return getGoldCardImg(str, 0);
 	}
+
 	// 골드카드 만들기
 	private String[] getGoldCardImg(String str, int color) {
 		String[] cardImg = new String[3];
@@ -303,11 +341,11 @@ public class AeneanViewImplV1 implements AeneanView {
 		tempSide += ViewColor.END;
 
 		tempBody = tempSide;
-		if(color == 1) {
+		if (color == 1) {
 			tempBody += ViewColor.YELLOW;
-		}else if(color == 2) {
+		} else if (color == 2) {
 			tempBody += ViewColor.RED;
-		}else {
+		} else {
 			tempBody += ViewColor.GREEN;
 		}
 		tempBody += str;
