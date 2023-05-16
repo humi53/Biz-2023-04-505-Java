@@ -18,8 +18,8 @@ public class AeneanExec {
 //		view.setGameDeck(bjDto);
 //		view.paint();
 		
-		AeneanService anService = new AeneanServiceImplV1();
-//		AeneanService anService = new AeneanServiceImplV2();
+//		AeneanService anService = new AeneanServiceImplV1();
+		AeneanService anService = new AeneanServiceImplV2();
 		anService.start();
 		
 		

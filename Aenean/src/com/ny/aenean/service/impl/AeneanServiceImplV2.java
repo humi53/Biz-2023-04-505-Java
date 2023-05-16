@@ -81,18 +81,28 @@ public class AeneanServiceImplV2 implements AeneanService{
 			}
 		}
 	}
+	
+	// Dealer 와 Player 모두 카드를 버림.
+	// Bust 정보를 false로 초기화
+	// 게임상태 >> GameReady로 변경.
 	private void processGameStand() {
+		bjDto.setBustDealer(false);
+		bjDto.setBustPlayer(false);
 		bjDto.getDealer().cardClr();
 		bjDto.getPlayer().cardClr();
 		bjDto.getDealer().closeCard();
 		bjDto.setGameState(GameState.GAMEREADY);
 	}
 	
+	// Main화면 출력.
+	// 게임상태 >> GameReady로 변경.
 	private void processMain() {
 		ViewPaint();
 		bjDto.setGameState(ipService.scanMainScreen());
 	}
 	
+	// 게임결과를 화면출력.
+	// 게임상태 >> GameStand로 변경.
 	private void processGameResult() {
 		ViewPaint();
 		try {
@@ -103,11 +113,17 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(ipService.scanPassMessage(bjDto.getGameState()));
 	}
 	
+	// 비어있는 테이블 출력.
+	// 게임상태 >> DISTRIBUTE로 변경.
 	private void processGameReady() {
 		ViewPaint();
 		bjDto.setGameState(ipService.scanPassMessage(bjDto.getGameState()));
 	}
 	
+	// 플레이어가 hit, stay를 선택 대기. 그리고 입력받은후
+	// 과정 처리.
+	// 게임상태 >> PLAYERSTAY
+	// 			>> PLAYERISBUST
 	private void processPlayerPrompt() {
 		PlayerDto player = bjDto.getPlayer();
 		int gameState = GameState.PLAYERPROMPT;
@@ -137,6 +153,9 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(gameState);
 	}
 	
+	// 플레이어 stay 선택.
+	// 딜러 턴 되기전 처리. (뒤집어진 카드 오픈)
+	// 게임상태 >> DEALERREADY
 	private void processPlayerStay() {
 		try {
 			bjDto.getDealer().openCard();
@@ -148,6 +167,8 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(GameState.DEALERREADY);
 	}
 	
+	// 플레이어가 Bust 됬을때 처리. (21over)
+	// 게임상태 >> WINNERDEALER
 	private void processPlayerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
@@ -158,6 +179,9 @@ public class AeneanServiceImplV2 implements AeneanService{
 		}
 		bjDto.setGameState(GameState.WINNERDEALER);
 	}
+	
+	// 딜러가 Bust 됬을때 처리. (21over)
+	// 게임상태 >> WINNERPLAERY
 	private void processDealerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
@@ -169,6 +193,11 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(GameState.WINNERPLAERY);
 	}
 	
+	// 딜러 카드 17이 넘었을때 처리
+	//		승리자 계산.
+	// 게임상태 >> WINNERPLAERY
+	// 			>> WINNERDEALER
+	//			>> GAMEPUSH
 	private void processDealer17Over() {
 		int dealerScore = bjDto.getDealer().getSumScore();
 		int playerScore = bjDto.getPlayer().getSumScore();
@@ -186,6 +215,9 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(gameState);
 	}
 	
+	// 딜러 딜(카드받는) 처리
+	// 게임상태 >> DEALER17OVER
+	//			>> DEALERISBUST
 	private void processDealerReady() {
 		DealerDto dealer = bjDto.getDealer();
 		int gameState = GameState.DEALERREADY;
@@ -212,12 +244,15 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(gameState);
 	}
 	
+	// 딜러or 플레이어 카드 딜.
 	private void userDealCard(ISuperDto user) {
 		DeckDto deck = bjDto.getDeck();
 		user.deal(deck.getCard());	// 카드객체 dto에 밀어넣기.
 		deck.getCardConfirm();	// deck에 있는 카드객체 제거.
 	}
 
+	// 딜러와 플레이어에게 2장씩 카드 딜.
+	// 게임상태 >> PLAYERPROMPT
 	private void processGameDistibute() {
 		for(int i = 0; i < 4; i++) {
 			if(i < 2) {
@@ -235,6 +270,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 		bjDto.setGameState(GameState.PLAYERPROMPT);
 	}
 
+	// 덱이 10장 이하면 새로운 덱을 준비한다.
 	private void setGame() {
 		if(bjDto.getDeck().getDeckListCount() < 10 && bjDto.getGameState() == GameState.GAMESTAND) {
 			try {
@@ -247,8 +283,5 @@ public class AeneanServiceImplV2 implements AeneanService{
 			}
 			bjDto.getDeck().setDeck();
 		}
-		// 덱을준비한다
-//		bjDto.getDeck().setDeck();
-		
 	}
 }

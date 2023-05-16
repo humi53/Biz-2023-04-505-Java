@@ -14,6 +14,8 @@ public class BlackJackDto {
 		setDealer();
 		setPlayer();
 		setDeck();
+		bustPlayer = false;
+		bustDealer = false;
 		this.gameState = GameState.MAIN;
 	}
 	
