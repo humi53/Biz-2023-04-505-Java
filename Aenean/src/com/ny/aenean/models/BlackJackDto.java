@@ -7,6 +7,8 @@ public class BlackJackDto {
 	private PlayerDto player;
 	private DeckDto deck;
 	private int gameState;
+	private boolean bustPlayer;
+	private boolean bustDealer;
 	
 	public BlackJackDto() {
 		setDealer();
@@ -41,6 +43,22 @@ public class BlackJackDto {
 
 	public void setGameState(int gameState) {
 		this.gameState = gameState;
+	}
+
+	public boolean isBustPlayer() {
+		return bustPlayer;
+	}
+
+	public void setBustPlayer(boolean bustPlayer) {
+		this.bustPlayer = bustPlayer;
+	}
+
+	public boolean isBustDealer() {
+		return bustDealer;
+	}
+
+	public void setBustDealer(boolean bustDealer) {
+		this.bustDealer = bustDealer;
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.ny.aenean.exec;
 
 import com.ny.aenean.service.AeneanService;
 import com.ny.aenean.service.impl.AeneanServiceImplV1;
+import com.ny.aenean.service.impl.AeneanServiceImplV2;
 
 public class AeneanExec {
 	public static void main(String[] args) {
@@ -18,7 +19,10 @@ public class AeneanExec {
 //		view.paint();
 		
 		AeneanService anService = new AeneanServiceImplV1();
+//		AeneanService anService = new AeneanServiceImplV2();
 		anService.start();
+		
+		
 
 		
 	}

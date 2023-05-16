@@ -15,7 +15,7 @@ import com.ny.aenean.models.ISuperDto;
 import com.ny.aenean.models.PlayerDto;
 import com.ny.aenean.view.AeneanView;
 
-public class AeneanViewImplV1 implements AeneanView {
+public class AeneanViewImplV2 implements AeneanView {
 	BlackJackDto bjDto;
 
 	@Override
@@ -30,8 +30,6 @@ public class AeneanViewImplV1 implements AeneanView {
 		if (bjDto.getGameState() == GameState.MAIN) {
 			printGameMain();
 		} else if (bjDto.getGameState() == GameState.GAMEREADY) {	
-			printGamePlaying();
-		} else if (bjDto.getGameState() == GameState.GAMEDEALING) {	// GameDealing == Distribute
 			printGamePlaying();
 		} else if (bjDto.getGameState() == GameState.DISTRIBUTE) {	// GameDealing == Distribute
 			printGamePlaying();
@@ -117,7 +115,7 @@ public class AeneanViewImplV1 implements AeneanView {
 			System.out.println("─".repeat(90));
 
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(700);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,12 +138,12 @@ public class AeneanViewImplV1 implements AeneanView {
 		// 카드 첫줄...
 		setMoreImg(firImg, makeNameImg("Dealer")); // 딜러라는 표시와 공백
 		setMoreImg(firImg, getDealerImg()); // 딜러카드 이미지
-		setMoreImg(firImg, getBustImg(bjDto.getDealer()));
+		if(bjDto.isBustDealer()) setMoreImg(firImg, getBustImg(bjDto.getDealer()));
 
 		// 카드 두번째줄...
 		setMoreImg(secImg, makeNameImg("Player")); // 플레이어라는 표시와 공백
 		setMoreImg(secImg, getPlayerImg()); // 플레이어 카드 이미지
-		setMoreImg(secImg, getBustImg(bjDto.getPlayer()));
+		if(bjDto.isBustPlayer()) setMoreImg(secImg, getBustImg(bjDto.getPlayer()));
 		// 게임 타이틀
 
 		// 화면 클리어
@@ -161,11 +159,7 @@ public class AeneanViewImplV1 implements AeneanView {
 		// 게임결과 표현
 		if (bjDto.getGameState() == GameState.WINNERDEALER || bjDto.getGameState() == GameState.WINNERPLAERY
 				|| bjDto.getGameState() == GameState.GAMEPUSH) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
 			printWinMessage();
 		}
 
@@ -197,6 +191,11 @@ public class AeneanViewImplV1 implements AeneanView {
 			str += ViewColor.GREEN;
 			str += "게임이 Push 되었습니다.";
 			str += ViewColor.END;
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		System.out.println("\t\t" + str);
 

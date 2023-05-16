@@ -27,8 +27,9 @@ public class InputConfig {
 		public static final int GAMESTAND = 14;		// 승자확인 후 다음게임 여부를 대기상태
 		public static final int WINNERPLAERY = 15;	// 결과 : 플레이어 승리
 		public static final int WINNERDEALER = 16;	// 결과 : 딜러 승리
-		public static final int GAMEDEALING = 17;	// 초반 2장씩 나눠주고 있는 상태.
+		public static final int GAMEDEALING = 17;	// 초반 2장씩 나눠주고 있는 상태. (V1 : 구버전 명칭)
 		public static final int GAMEPUSH = 18;		// 결과 : 무승부
+		public static final int DISTRIBUTE = 19;	// 초반 2장씩 나눠주고 있는 상태. (새 명칭)
 		
 		public static final int PLAYERPROMPT = 51;		// 플레이어의 HitStay를 대기
 		public static final int PLAYERHIT = 52;		// 플레이어어가 HIT를 고른 상태
