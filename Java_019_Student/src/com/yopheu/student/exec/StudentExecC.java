@@ -1,6 +1,6 @@
 package com.yopheu.student.exec;
 
-import com.yopheu.student.StudentService;
+import com.yopheu.student.service.StudentService;
 import com.yopheu.student.service.impl.StudentServiceImplV1;
 
 /*

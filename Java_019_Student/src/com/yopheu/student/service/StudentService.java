@@ -1,4 +1,4 @@
-package com.yopheu.student;
+package com.yopheu.student.service;
 
 import java.util.List;
 
