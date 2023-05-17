@@ -130,6 +130,7 @@ public class AeneanViewImplV2 implements AeneanView {
 		String[] firImg = { "", "", "" };
 		String[] secImg = { "", "", "" };
 
+		//================================================================
 		// 출력 데이터 셋팅 및 로딩
 		// 위에
 		setMoreImg(topImg, makeOneTab(6));
@@ -146,6 +147,7 @@ public class AeneanViewImplV2 implements AeneanView {
 		if(bjDto.isBustPlayer()) setMoreImg(secImg, getBustImg(bjDto.getPlayer()));
 		// 게임 타이틀
 
+		//=================================================================
 		// 화면 클리어
 		clearScreen();
 		// 카드 출력
