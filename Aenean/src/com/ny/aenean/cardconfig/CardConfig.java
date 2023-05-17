@@ -29,7 +29,7 @@ public class CardConfig {
 		public static final String K = "K";
 	}
 	public class CardScore{
-		public static final int A = 10;
+		public static final int A = 1;
 		public static final int T = 10;
 		public static final int J = 10;
 		public static final int Q = 10;

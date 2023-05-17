@@ -45,12 +45,14 @@ public class Card {
 
 	private int cardNum2Score(String sNum) {
 		int cardScore = -1;
-		if(sNum.equalsIgnoreCase(CardNum.A) ||
+		if(
 				sNum.equalsIgnoreCase(CardNum.T) ||
 				sNum.equalsIgnoreCase(CardNum.J) ||
 				sNum.equalsIgnoreCase(CardNum.Q) ||
 				sNum.equalsIgnoreCase(CardNum.K) ) {
 			cardScore = 10;				
+		}else if(sNum.equalsIgnoreCase(CardNum.A)) {
+			cardScore = 1;
 		}else {
 			try {
 				cardScore = Integer.valueOf(sNum);

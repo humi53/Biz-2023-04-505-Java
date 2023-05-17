@@ -115,7 +115,7 @@ public class AeneanViewImplV2 implements AeneanView {
 			System.out.println("─".repeat(90));
 
 			try {
-				Thread.sleep(700);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

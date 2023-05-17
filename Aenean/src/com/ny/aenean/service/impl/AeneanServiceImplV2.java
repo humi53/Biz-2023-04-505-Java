@@ -18,7 +18,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 	AeneanView view;
 	BlackJackDto bjDto;
 	AeneanInputService ipService;
-	
+	private int cardThreadSleep = 300;
 	public AeneanServiceImplV2() {
 		setView(new AeneanViewImplV2());
 		setBlackJackDto(new BlackJackDto());
@@ -106,7 +106,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 	private void processGameResult() {
 		ViewPaint();
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(cardThreadSleep);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -159,7 +159,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 	private void processPlayerStay() {
 		try {
 			bjDto.getDealer().openCard();
-			Thread.sleep(1000);
+			Thread.sleep(cardThreadSleep);
 			ViewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -172,7 +172,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 	private void processPlayerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
-			Thread.sleep(1000);
+			Thread.sleep(cardThreadSleep);
 			ViewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -185,7 +185,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 	private void processDealerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
-			Thread.sleep(1000);
+			Thread.sleep(cardThreadSleep);
 			ViewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -229,7 +229,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 			}else {
 				userDealCard(dealer);
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(cardThreadSleep);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -262,7 +262,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 			}
 			ViewPaint();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(cardThreadSleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -274,9 +274,8 @@ public class AeneanServiceImplV2 implements AeneanService{
 	private void setGame() {
 		if(bjDto.getDeck().getDeckListCount() < 10 && bjDto.getGameState() == GameState.GAMESTAND) {
 			try {
-				Thread.sleep(2000);
 				System.out.println("새로운 덱을 준비하고 있습니다.");
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
