@@ -6,6 +6,8 @@ public class BlackJackDto {
 	private DealerDto dealer;
 	private PlayerDto player;
 	private DeckDto deck;
+	private ScoreDto scDto;
+	
 	private int gameState;
 	private boolean bustPlayer;
 	private boolean bustDealer;
@@ -14,6 +16,7 @@ public class BlackJackDto {
 		setDealer();
 		setPlayer();
 		setDeck();
+		scDto = new ScoreDto();
 		bustPlayer = false;
 		bustDealer = false;
 		this.gameState = GameState.MAIN;
@@ -63,5 +66,8 @@ public class BlackJackDto {
 		this.bustDealer = bustDealer;
 	}
 	
+	public ScoreDto getScoreDto() {
+		return scDto;
+	}
 	
 }

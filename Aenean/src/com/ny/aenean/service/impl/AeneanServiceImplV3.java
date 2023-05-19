@@ -8,28 +8,30 @@ import com.ny.aenean.models.DealerDto;
 import com.ny.aenean.models.DeckDto;
 import com.ny.aenean.models.ISuperDto;
 import com.ny.aenean.models.PlayerDto;
+import com.ny.aenean.models.ScoreDto;
 import com.ny.aenean.service.AeneanInputService;
 import com.ny.aenean.service.AeneanService;
 import com.ny.aenean.view.AeneanView;
-import com.ny.aenean.view.impl.AeneanViewImplV2;
+import com.ny.aenean.view.impl.AeneanViewImplV3;
 
-public class AeneanServiceImplV2 implements AeneanService{
-	
+public class AeneanServiceImplV3 implements AeneanService {
+
 	AeneanView view;
 	BlackJackDto bjDto;
 	AeneanInputService ipService;
 	private int cardThreadSleep = 300;
-	public AeneanServiceImplV2() {
-		setView(new AeneanViewImplV2());
+
+	public AeneanServiceImplV3() {
+		setView(new AeneanViewImplV3());
 		setBlackJackDto(new BlackJackDto());
 		view.setGameDeck(bjDto);
-		setInputService(new AeneanInputServiceImplV2());
+		setInputService(new AeneanInputServiceImplV3());
 	}
 
-	private void ViewPaint() {
+	private void viewPaint() {
 		view.paint();
 	}
-	
+
 	@Override
 	public void setView(AeneanView view) {
 		this.view = view;
@@ -38,9 +40,9 @@ public class AeneanServiceImplV2 implements AeneanService{
 	@Override
 	public void setInputService(AeneanInputService ipService) {
 		this.ipService = ipService;
-		
+
 	}
-	
+
 	@Override
 	public void setBlackJackDto(BlackJackDto bjDto) {
 		this.bjDto = bjDto;
@@ -49,95 +51,131 @@ public class AeneanServiceImplV2 implements AeneanService{
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		
+
 //		bjDto.setGameState(GameState.MAIN);
-		while(true) {
+		while (true) {
 			setGame();
-			if(bjDto.getGameState() == GameState.MAIN) {			// 메인화면
+			if (bjDto.getGameState() == GameState.MAIN) { // 메인화면
 				processMain();
-			}else 
-			if(bjDto.getGameState() == GameState.GAMEREADY) {		// 카드 나눠주기 전
+			} else if (bjDto.getGameState() == GameState.GAMEREADY) { // 카드 나눠주기 전
 				processGameReady();
-			}else if(bjDto.getGameState() == GameState.DISTRIBUTE) {	// 카드 2장씩 나눠주기
+			} else if (bjDto.getGameState() == GameState.BETTING) { // cash 배팅
+				processBetting();
+			} else if (bjDto.getGameState() == GameState.DISTRIBUTE) { // 카드 2장씩 나눠주기
 				processGameDistibute();
-			}else if(bjDto.getGameState() == GameState.PLAYERPROMPT) {	// 플레이어 hit stay 선택 대기
+			} else if (bjDto.getGameState() == GameState.PLAYERPROMPT) { // 플레이어 hit stay 선택 대기
 				processPlayerPrompt();
-			}else if(bjDto.getGameState() == GameState.PLAYERSTAY) {	// 플레이어 stay 선택 시.
+			} else if (bjDto.getGameState() == GameState.PLAYERSTAY) { // 플레이어 stay 선택 시.
 				processPlayerStay();
-			}else if(bjDto.getGameState() == GameState.PLAYERISBUST) {	// 플레이어 bust 상태 시.
+			} else if (bjDto.getGameState() == GameState.PLAYERISBUST) { // 플레이어 bust 상태 시.
 				processPlayerIsBust();
-			}else if(bjDto.getGameState() == GameState.DEALERREADY) {	// 딜러 ready 상태. 
+			} else if (bjDto.getGameState() == GameState.DEALERREADY) { // 딜러 ready 상태.
 				processDealerReady();
-			}else if(bjDto.getGameState() == GameState.DEALER17OVER) {	// 딜러 딜링 끝난 상태.
+			} else if (bjDto.getGameState() == GameState.DEALER17OVER) { // 딜러 딜링 끝난 상태.
 				processDealer17Over();
-			}else if(bjDto.getGameState() == GameState.DEALERISBUST) {	// 딜러 bust 난 상태.
+			} else if (bjDto.getGameState() == GameState.DEALERISBUST) { // 딜러 bust 난 상태.
 				processDealerIsBust();
-			}else if(bjDto.getGameState() == GameState.WINNERDEALER ||
-					bjDto.getGameState() == GameState.WINNERPLAERY ||
-					bjDto.getGameState() == GameState.GAMEPUSH) {
+			} else if (bjDto.getGameState() == GameState.WINNERDEALER
+					|| bjDto.getGameState() == GameState.PLAYERBLACKJACK
+					|| bjDto.getGameState() == GameState.WINNERPLAERY || bjDto.getGameState() == GameState.GAMEPUSH) {
 				processGameResult();
-			}else if(bjDto.getGameState() == GameState.GAMESTAND) {	// 다음게임 대기상태. 넘어가면 초기화하고 대기함
+			} else if (bjDto.getGameState() == GameState.GAMESTAND) { // 다음게임 대기상태. 넘어가면 초기화하고 대기함
 				processGameStand();
 			}
 		}
 	}
-	
+
 	// Dealer 와 Player 모두 카드를 버림.
 	// Bust 정보를 false로 초기화
 	// 게임상태 >> GameReady로 변경.
 	private void processGameStand() {
-		bjDto.setBustDealer(false);
-		bjDto.setBustPlayer(false);
-		bjDto.getDealer().cardClr();
-		bjDto.getPlayer().cardClr();
-		bjDto.getDealer().closeCard();
+		bjDto.setBustDealer(false); // 딜러 Bust 값 초기화
+		bjDto.setBustPlayer(false); // 플레이어 Bust 값 초기화
+		bjDto.getDealer().cardClr(); // 딜러가 가진 카드 버림
+		bjDto.getPlayer().cardClr(); // 플레이어가 가진 카드 버림
+		bjDto.getDealer().closeCard(); // 딜러 카드 뒤집기 설정 초기화
 		bjDto.setGameState(GameState.GAMEREADY);
 	}
-	
+
 	// Main화면 출력.
 	// 게임상태 >> GameReady로 변경.
 	private void processMain() {
-		ViewPaint();
+		viewPaint();
 		bjDto.setGameState(ipService.scanMainScreen());
 	}
-	
+
 	// 게임결과를 화면출력.
 	// 게임상태 >> GameStand로 변경.
 	private void processGameResult() {
-		ViewPaint();
+		viewPaint();
 		try {
 			Thread.sleep(cardThreadSleep);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		int gameState = bjDto.getGameState();
+		ScoreDto scDto = bjDto.getScoreDto();
+		int nowBet = scDto.getNowBet();
+		if (gameState == GameState.PLAYERBLACKJACK) {
+			// 블랙잭이면 4배
+			int catMoney = nowBet * 4;
+			scDto.addAccWin(catMoney);
+			scDto.addPlayerCash(catMoney);
+		} else if (gameState == GameState.WINNERDEALER) {
+			// 딜러가 이기면 
+			scDto.addAccWin(-nowBet);
+		} else if (gameState == GameState.GAMEPUSH) {
+			// 무승부면 1배
+			scDto.addPlayerCash(nowBet);
+		} else if (gameState == GameState.WINNERPLAERY) {
+			// 플레이어가 이기면 2배
+			int catMoney = nowBet * 2;
+			scDto.addAccWin(catMoney);
+			scDto.addPlayerCash(catMoney);
+		}
+
 		bjDto.setGameState(ipService.scanPassMessage(bjDto.getGameState()));
 	}
-	
+
 	// 비어있는 테이블 출력.
-	// 게임상태 >> DISTRIBUTE로 변경.
+	// 게임상태 >> BETTING 으로 변경.
 	private void processGameReady() {
-		ViewPaint();
-		bjDto.setGameState(ipService.scanPassMessage(bjDto.getGameState()));
+		viewPaint();
+		bjDto.setGameState(GameState.BETTING);
 	}
-	
+
+	// 베팅값 입력 받아 처리.
+	// 1 ~ 5외의 숫자나 다른문자열은 1로처리.
+	// 게임상태 >> DISTRIBUTE로 변경.
+	private void processBetting() {
+		viewPaint();
+		int betMul = ipService.scanNumber(bjDto);
+		ScoreDto scDto = bjDto.getScoreDto();
+		scDto.setMul(betMul);
+		
+		bjDto.setGameState(GameState.DISTRIBUTE);
+
+	}
+
 	// 플레이어가 hit, stay를 선택 대기. 그리고 입력받은후
 	// 과정 처리.
 	// 게임상태 >> PLAYERSTAY
-	// 			>> PLAYERISBUST
+	// >> PLAYERISBUST
 	private void processPlayerPrompt() {
 		PlayerDto player = bjDto.getPlayer();
 		int gameState = GameState.PLAYERPROMPT;
 		do {
 			int hitStay = ipService.scanHitStay();
-			if(hitStay == HitStay.HIT) {
+			if (hitStay == HitStay.HIT) {
 				// 받는다.
 				userDealCard(player);
-			}else if(hitStay == HitStay.STAY) {
+			} else if (hitStay == HitStay.STAY) {
 				gameState = GameState.PLAYERSTAY;
 				break;
 			}
-			ViewPaint();
-			if(player.getBustState() == IsBust.BUST) {
+			viewPaint();
+			if (player.getBustState() == IsBust.BUST) {
 				// 버스트 된정보를 표시.
 				bjDto.setBustPlayer(player.getBustState());
 				try {
@@ -145,14 +183,14 @@ public class AeneanServiceImplV2 implements AeneanService{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				ViewPaint();	
+				viewPaint();
 				gameState = GameState.PLAYERISBUST;
 				break;
 			}
-		}while (true);
+		} while (true);
 		bjDto.setGameState(gameState);
 	}
-	
+
 	// 플레이어 stay 선택.
 	// 딜러 턴 되기전 처리. (뒤집어진 카드 오픈)
 	// 게임상태 >> DEALERREADY
@@ -160,107 +198,109 @@ public class AeneanServiceImplV2 implements AeneanService{
 		try {
 			bjDto.getDealer().openCard();
 			Thread.sleep(cardThreadSleep);
-			ViewPaint();
+			viewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		bjDto.setGameState(GameState.DEALERREADY);
 	}
-	
+
 	// 플레이어가 Bust 됬을때 처리. (21over)
 	// 게임상태 >> WINNERDEALER
 	private void processPlayerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
 			Thread.sleep(cardThreadSleep);
-			ViewPaint();
+			viewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		bjDto.setGameState(GameState.WINNERDEALER);
 	}
-	
+
 	// 딜러가 Bust 됬을때 처리. (21over)
 	// 게임상태 >> WINNERPLAERY
 	private void processDealerIsBust() {
 		try {
 			bjDto.getDealer().openCard();
 			Thread.sleep(cardThreadSleep);
-			ViewPaint();
+			viewPaint();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		bjDto.setGameState(GameState.WINNERPLAERY);
 	}
-	
+
 	// 딜러 카드 17이 넘었을때 처리
-	//		승리자 계산.
+	// 승리자 계산.
 	// 게임상태 >> WINNERPLAERY
-	// 			>> WINNERDEALER
-	//			>> GAMEPUSH
+	// >> WINNERDEALER
+	// >> GAMEPUSH
 	private void processDealer17Over() {
 		int dealerScore = bjDto.getDealer().getSumScore();
 		int playerScore = bjDto.getPlayer().getSumScore();
 		int gameState = GameState.DEALER17OVER;
-		if(playerScore == 21) {
-//			return GameState.PLAYERBLACKJACK;
+		if (playerScore == 21) {
+			gameState = GameState.PLAYERBLACKJACK;
+//			gameState = GameState.WINNERPLAERY;
+		} else if (playerScore > dealerScore) {
 			gameState = GameState.WINNERPLAERY;
-		}else if(playerScore > dealerScore) {
-			gameState = GameState.WINNERPLAERY;
-		}else if(playerScore < dealerScore) {
+		} else if (playerScore < dealerScore) {
 			gameState = GameState.WINNERDEALER;
-		}else if(playerScore == dealerScore) {
+		} else if (playerScore == dealerScore) {
 			gameState = GameState.GAMEPUSH;
 		}
 		bjDto.setGameState(gameState);
 	}
-	
+
 	// 딜러 딜(카드받는) 처리
 	// 게임상태 >> DEALER17OVER
-	//			>> DEALERISBUST
+	// >> DEALERISBUST
 	private void processDealerReady() {
 		DealerDto dealer = bjDto.getDealer();
 		int gameState = GameState.DEALERREADY;
 		do {
-			ViewPaint();
-			if(dealer.getScore17IsOver()) {
+			viewPaint();
+			if (dealer.getScore17IsOver()) {
 				gameState = GameState.DEALER17OVER;
 				break;
-			}else {
+			} else {
 				userDealCard(dealer);
 				try {
 					Thread.sleep(cardThreadSleep);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				ViewPaint();
+				viewPaint();
 			}
-			if(dealer.getBustState() == IsBust.BUST) {
+			if (dealer.getBustState() == IsBust.BUST) {
 				bjDto.setBustDealer(dealer.getBustState());
 				gameState = GameState.DEALERISBUST;
 				break;
 			}
-		}while (true);
+		} while (true);
 		bjDto.setGameState(gameState);
 	}
-	
+
 	// 딜러or 플레이어 카드 딜.
 	private void userDealCard(ISuperDto user) {
 		DeckDto deck = bjDto.getDeck();
-		user.deal(deck.getCard());	// 카드객체 dto에 밀어넣기.
-		deck.getCardConfirm();	// deck에 있는 카드객체 제거.
+		user.deal(deck.getCard()); // 카드객체 dto에 밀어넣기.
+		deck.getCardConfirm(); // deck에 있는 카드객체 제거.
 	}
 
 	// 딜러와 플레이어에게 2장씩 카드 딜.
 	// 게임상태 >> PLAYERPROMPT
 	private void processGameDistibute() {
-		for(int i = 0; i < 4; i++) {
-			if(i < 2) {
+		
+		bjDto.getScoreDto().addPlayerCash(-bjDto.getScoreDto().getNowBet());
+		for (int i = 0; i < 4; i++) {
+			if (i < 2) {
 				userDealCard(bjDto.getDealer());
-			}else {
+			} else {
 				userDealCard(bjDto.getPlayer());
 			}
-			ViewPaint();
+			viewPaint();
 			try {
 				Thread.sleep(cardThreadSleep);
 			} catch (InterruptedException e) {
@@ -272,7 +312,7 @@ public class AeneanServiceImplV2 implements AeneanService{
 
 	// 덱이 10장 이하면 새로운 덱을 준비한다.
 	private void setGame() {
-		if(bjDto.getDeck().getDeckListCount() < 10 && bjDto.getGameState() == GameState.GAMESTAND) {
+		if (bjDto.getDeck().getDeckListCount() < 10 && bjDto.getGameState() == GameState.GAMESTAND) {
 			try {
 				System.out.println("새로운 덱을 준비하고 있습니다.");
 				Thread.sleep(1000);

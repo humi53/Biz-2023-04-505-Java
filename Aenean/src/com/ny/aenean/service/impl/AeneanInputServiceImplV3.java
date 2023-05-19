@@ -7,10 +7,10 @@ import com.ny.aenean.cardconfig.InputConfig.HitStay;
 import com.ny.aenean.models.BlackJackDto;
 import com.ny.aenean.service.AeneanInputService;
 
-public class AeneanInputServiceImplV1 implements AeneanInputService{
+public class AeneanInputServiceImplV3 implements AeneanInputService{
 	
 	Scanner scan;
-	public AeneanInputServiceImplV1() {
+	public AeneanInputServiceImplV3() {
 		scan = new Scanner(System.in);
 	}
 	
@@ -48,10 +48,12 @@ public class AeneanInputServiceImplV1 implements AeneanInputService{
 		if(gameState == GameState.GAMEREADY) {
 			System.out.print("\t 카드를 딜링하려면 Enter키를 누르세요. ");
 			scan.nextLine();
-			return GameState.GAMEDEALING;
+			return GameState.BETTING;
 		}else if(gameState == GameState.WINNERDEALER ||
 				gameState == GameState.WINNERPLAERY ||
-				gameState == GameState.GAMEPUSH) {
+				gameState == GameState.GAMEPUSH ||
+				gameState == GameState.PLAYERBLACKJACK 
+				) {
 			System.out.print("\t 다음게임을 하려면 Enter키를 누르세요. ");
 			scan.nextLine();
 			return GameState.GAMESTAND;
@@ -60,9 +62,23 @@ public class AeneanInputServiceImplV1 implements AeneanInputService{
 	}
 
 	@Override
-	public int scanNumber(BlackJackDto bjDt) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int scanNumber(BlackJackDto bjDto) {
+		int intBet = bjDto.getScoreDto().getMul();
+		if(bjDto.getGameState() == GameState.BETTING) {
+			System.out.println("\t 베팅값은 1 ~ 5 사이 입니다. ");
+			System.out.print("\t Betting >> ");
+			
+			try {
+				String bet = scan.nextLine();
+				intBet = Integer.valueOf(bet);
+				if(intBet < 1 || intBet > 5 ) {
+					intBet = bjDto.getScoreDto().getMul();
+				} 
+			} catch (Exception e) {
+			}
+		} 
+		// bjDto.setGameState(GameState.DISTRIBUTE); 
+		return intBet;
 	}
 
 }

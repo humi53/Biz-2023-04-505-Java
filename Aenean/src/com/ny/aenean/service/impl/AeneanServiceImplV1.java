@@ -11,7 +11,7 @@ import com.ny.aenean.models.PlayerDto;
 import com.ny.aenean.service.AeneanInputService;
 import com.ny.aenean.service.AeneanService;
 import com.ny.aenean.view.AeneanView;
-import com.ny.aenean.view.Impl.AeneanViewImplV1;
+import com.ny.aenean.view.impl.AeneanViewImplV1;
 
 public class AeneanServiceImplV1 implements AeneanService{
 	
