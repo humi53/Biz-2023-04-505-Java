@@ -2,12 +2,17 @@ package com.yopheu.balckjack.exec;
 
 public class ViewTest {
 	  public static void clearScreen() {
-		    for (int i = 0; i < 80; i++)
-		      System.out.println("");
-		  }
+	    for (int i = 0; i < 80; i++)
+	      System.out.println("");
+	  }
 
-
+	public static void clearScreen2() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+	}
+	
 	public static void main(String[] args) {
+		
 		System.out.println("┌──┐");
 		System.out.print("│");
 		System.out.print("\u001B[31m♥\u001B[0m");
@@ -77,6 +82,9 @@ public class ViewTest {
 		System.out.println("│"+ cardNum + "│");
 		System.out.println("└──┘");
 		
-//		clearScreen();
+		clearScreen2();
+		clearScreen2();
+		clearScreen2();
+		clearScreen2();
 	}
 }
