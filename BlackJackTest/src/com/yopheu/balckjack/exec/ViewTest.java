@@ -1,5 +1,10 @@
 package com.yopheu.balckjack.exec;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.yopheu.balckjack.models.MyDto;
+
 public class ViewTest {
 	  public static void clearScreen() {
 	    for (int i = 0; i < 80; i++)
@@ -12,79 +17,34 @@ public class ViewTest {
 	}
 	
 	public static void main(String[] args) {
+		MyDto[] arrDto;
+		arrDto = new MyDto[5];
+		for(int i = 0; i < arrDto.length; i++) {
+			arrDto[i] = new MyDto();
+		}
 		
-		System.out.println("┌──┐");
-		System.out.print("│");
-		System.out.print("\u001B[31m♥\u001B[0m");
-		System.out.print("\u001B[31mA\u001B[0m");
-		System.out.println("│");
-		System.out.println("└──┘");
+		for(int i = 0; i < arrDto.length; i++) {
+			System.out.println(arrDto[i]);
+		}
+		 
+		List<MyDto> dtoList;
+		dtoList = new ArrayList<>();
 		
-		System.out.println("┌──┐");
-		System.out.print("│");
-		System.out.print("\u001B[31m");
-		System.out.print("♦A");
-		System.out.print("\u001B[0m");
-		System.out.println("│");
-		System.out.println("└──┘");
+		for(int i = 0; i < 6; i++) {
+			MyDto myDto = new MyDto();
+			myDto.name = "S" + i;
+			myDto.num1 = i+1;
+			myDto.num2 = 100 + i + 1;
+			dtoList.add(new MyDto());
+		}
+
+		MyDto dto = new MyDto();
 		
-		System.out.println("┌──┐");
-		System.out.print("│");
-		System.out.print("♣");
-		System.out.print("T");
-		System.out.println("│");
-		System.out.println("└──┘");
-		
-		System.out.print("\u001B[33m");
-		System.out.println("┌──┐");
-		System.out.print("\u001B[0m");
-		
-		System.out.print("\u001B[33m");
-		System.out.print("│");
-		System.out.print("\u001B[0m");
-		
-		System.out.print("\u001B[32m");
-		System.out.print("Y");
-		System.out.print("H");
-		System.out.print("\u001B[0m");
-		
-		System.out.print("\u001B[33m");
-		System.out.println("│");
-		System.out.print("\u001B[0m");
-		
-		System.out.print("\u001B[33m");
-		System.out.println("└──┘");
-		System.out.print("\u001B[0m");
-		
-		System.out.println("┌──┐");
-		System.out.print("│");
-		System.out.print("♠");
-		System.out.print("A");
-		System.out.println("│");
-		System.out.println("└──┘");
-		
-		String colorStart = "\u001B[31m";
-		String colorEnd = "\u001B[0m";
-		String simbol = "♥";
-		String number = "A";
-		String cardNum = colorStart + simbol + number + colorEnd;
-		System.out.println("┌──┐");
-		System.out.println("│"+ cardNum + "│");
-		System.out.println("└──┘");
+		dto.num1 = 10;
+		dto.num2 = 20;
+		dtoList.add(dto);
 		
 		
-		colorStart = "";
-		colorEnd = "";
-		simbol = "♠";
-		number = "A";
-		cardNum = colorStart + simbol + number + colorEnd;
-		System.out.println("┌──┐");
-		System.out.println("│"+ cardNum + "│");
-		System.out.println("└──┘");
 		
-		clearScreen2();
-		clearScreen2();
-		clearScreen2();
-		clearScreen2();
 	}
 }
