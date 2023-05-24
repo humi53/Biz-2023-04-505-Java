@@ -37,13 +37,12 @@ public class ViewTest {
 			myDto.num2 = 100 + i + 1;
 			dtoList.add(new MyDto());
 		}
-
-		MyDto dto = new MyDto();
 		
-		dto.num1 = 10;
-		dto.num2 = 20;
-		dtoList.add(dto);
 		
+		String str1 = "0001000101";
+		String str2 = "00010001";
+		System.out.println(str1.substring(0,str2.length()));
+		System.out.println();
 		
 		
 	}
