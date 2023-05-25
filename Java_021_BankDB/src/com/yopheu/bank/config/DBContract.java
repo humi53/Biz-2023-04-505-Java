@@ -31,4 +31,16 @@ public class DBContract {
 			"입출금계좌", "적금계좌", "대출계좌"
 	};
 	
+	public static class ACCLIST {
+		//aioseq, acnum, aiodate, aiotime, aiodiv, aioinput, aiooutput, aiorem 
+		public static final int AIO_SEQ = 1;
+		public static final int AC_NUM = 2;
+		public static final int AIO_DATE = 3;
+		public static final int AIO_TIME = 4;
+		public static final int AIO_DIV = 5;
+		public static final int AIO_INPUT = 6;
+		public static final int AIO_OUTPUT = 7;
+		public static final int AIO_REM = 8;
+	}
+	
 }
