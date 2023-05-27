@@ -1,4 +1,4 @@
-package com.callor.memo.service;
+package com.callor.memo.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,16 +10,18 @@ import org.apache.ibatis.session.SqlSession;
 import com.callor.memo.config.DBConnection;
 import com.callor.memo.mapper.MemoDao;
 import com.callor.memo.models.MemoDto;
+import com.callor.memo.service.Service;
 
-public class MemoService {
+public class ServiceImpl implements Service{
 	protected final MemoDao memoDao;
 	Scanner scan;
-	public MemoService() {
+	public ServiceImpl() {
 		SqlSession sqlSession = DBConnection.getFactory().openSession(true);
 		memoDao = sqlSession.getMapper(MemoDao.class);
 		scan = new Scanner(System.in);
 	}
 	// 메모 전체리스트 보기
+	@Override
 	public void printSelectAll() {
 		List<MemoDto> memoList = memoDao.selectAll();
 		System.out.println("=".repeat(60));
@@ -52,6 +54,7 @@ public class MemoService {
 		System.out.println("=".repeat(60));
 	}
 	// 메모 새롭게 입력
+	@Override
 	public void insertMemo() {
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat today = new SimpleDateFormat("YYYY-MM-dd");
@@ -81,6 +84,7 @@ public class MemoService {
 		scan.nextLine();
 	}
 	// 메모 수정하기
+	@Override
 	public void updateMemo() {
 		System.out.println("변경할 번호를 입력하세요.");
 		System.out.print(" >> ");
@@ -123,6 +127,7 @@ public class MemoService {
 		
 	}
 	// 메모 삭제
+	@Override
 	public void deleteMemo() {
 		System.out.print("삭제할 번호 >> ");
 		String s_id = scan.nextLine();
@@ -146,6 +151,7 @@ public class MemoService {
 		}
 	}
 	// 메모 작성자로 검색
+	@Override
 	public void findByWriter() {
 		System.out.print("탐색할 작성자명 >> ");
 		String m_writer = scan.nextLine();
@@ -162,7 +168,8 @@ public class MemoService {
 		scan.nextLine();
 		
 	}
-	// 메모 검색
+	// 메모 시퀀스로 검색
+	@Override
 	public void findBySeq() {
 		System.out.print("탐색할 번호 >> ");
 		String s_id = scan.nextLine();
@@ -186,6 +193,7 @@ public class MemoService {
 		scan.nextLine();
 	}
 	// 메모 내용 보기
+	@Override
 	public void printContent(int seq) {
 		
 		MemoDto memoDto = memoDao.findById(seq);

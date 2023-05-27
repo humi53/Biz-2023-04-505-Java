@@ -2,15 +2,16 @@ package com.callor.memo.exec;
 
 import java.util.Scanner;
 
-import com.callor.memo.service.MemoService;
+import com.callor.memo.service.Service;
+import com.callor.memo.service.impl.ServiceImpl;
 
 public class MemoExecA {
 	public static void main(String[] args) {
-		MemoService memoService = new MemoService();
+		Service service = new ServiceImpl();
 		Scanner scan = new Scanner(System.in);
 		
 		while(true) {
-			memoService.printSelectAll();
+			service.printSelectAll();
 			System.out.println(" 작성자이름 검색 : names , 번호검색 : ids");
 			System.out.println("신규 : n, 삭제 : d, 수정 : u");
 			System.out.println(" 메모내용보기 : (숫자)  종료 : QUIT");
@@ -21,19 +22,19 @@ public class MemoExecA {
 				System.out.println("종료합니다.");
 				break;
 			}else if(str.equalsIgnoreCase("n")) {
-				memoService.insertMemo();
+				service.insertMemo();
 			}else if(str.equalsIgnoreCase("d")) {
-				memoService.deleteMemo();
+				service.deleteMemo();
 			}else if(str.equalsIgnoreCase("u")) {
-				memoService.updateMemo();
+				service.updateMemo();
 			}else if(str.equals("names")) {
-				memoService.findByWriter();
+				service.findByWriter();
 			}else if(str.equals("ids")) {
-				memoService.findBySeq();
+				service.findBySeq();
 			}else {
 				try {
 					int seq = Integer.valueOf(str);
-					memoService.printContent(seq);
+					service.printContent(seq);
 				} catch (Exception e) {
 					System.out.println("없는 명령어 입니다.");
 					continue;
