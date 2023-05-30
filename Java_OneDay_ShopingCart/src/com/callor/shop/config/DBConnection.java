@@ -1,4 +1,4 @@
-package com.callor.memo.config;
+package com.callor.shop.config;
 
 import javax.sql.DataSource;
 
@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+
 
 public class DBConnection {
 	private static SqlSessionFactory sqlSesiFactory;
@@ -30,7 +31,7 @@ public class DBConnection {
 		
 		Configuration configuration = new Configuration(environment);
 		
-		configuration.addMappers("com.callor.memo.mapper");
+		configuration.addMappers("com.callor.shop.mapper");
 		
 		sqlSesiFactory
 			= new SqlSessionFactoryBuilder().build(configuration);
